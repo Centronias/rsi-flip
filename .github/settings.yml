@@ -2,19 +2,16 @@
 
 repository:
   description: "Basic CLI for horizontally mirroring RSIs"
-  topics: ""
+  topics: "ss14"
   has_issues: true
   has_projects: false
   has_wiki: false
   has_downloads: true
   default_branch: master
 
-  # Preference: people do clean commits
-  allow_merge_commit: true
-  # Backup in case we need to clean up commits
-  allow_squash_merge: true
-  # Not really needed
+  allow_merge_commit: false
   allow_rebase_merge: false
+  allow_squash_merge: true
 
   allow_auto_merge: true
   delete_branch_on_merge: true
