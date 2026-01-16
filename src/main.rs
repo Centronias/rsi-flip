@@ -1,6 +1,6 @@
 use anyhow::{anyhow, bail};
 use clap::Parser;
-use image::{DynamicImage, GenericImageView, ImageBuffer, ImageFormat, Rgba, RgbaImage, open};
+use image::{DynamicImage, GenericImageView, ImageBuffer, ImageFormat, Rgba, open};
 use std::path::PathBuf;
 
 fn main() -> anyhow::Result<()> {
