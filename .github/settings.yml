@@ -34,9 +34,6 @@ labels:
     description: "Uncertainty is involved"
   - name: breaking-change
     color: "#e99695"
-  - name: good first issue
-    color: '#c2e0c6'
-    description: "Help wanted!"
 
 # This serves more as documentation.
 # Branch protection API was replaced by rulesets but settings isn't updated.
