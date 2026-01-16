@@ -67,9 +67,15 @@ fn map_coordinates(width: u32, height: u32, x: u32, y: u32) -> (u32, u32) {
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
+/// Horizontally flips the directions in a four-direction RSI.
+/// See more at https://github.com/Centronias/rsi-flip
 struct Args {
+    /// The path of the image to flip.
     #[arg(short, long)]
     path: PathBuf,
+    // TODO Output path
+    // TODO Specify dimensions for non-square images
+    // TODO Maybe 8 direction sprites? I've never seen one, though
 }
 
 #[cfg(test)]
