@@ -5,7 +5,7 @@ edition = "2024"
 repository = "https://github.com/Centronias/rsi-flip"
 
 [dependencies]
-anyhow = "1.0.100"
+anyhow = "1.0.101"
 clap = { version = "4.5.54", features = ["derive"] }
 image = "0.25.9"
 
