@@ -6,7 +6,7 @@ repository = "https://github.com/Centronias/rsi-flip"
 
 [dependencies]
 anyhow = "1.0.102"
-clap = { version = "4.5.60", features = ["derive"] }
+clap = { version = "4.6.0", features = ["derive"] }
 image = "0.25.9"
 
 # The profile that 'dist' will build with
