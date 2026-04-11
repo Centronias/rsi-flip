@@ -23,7 +23,7 @@
     clippy::enum_glob_use
 )]
 
-use std::{collections::HashMap, path::PathBuf};
+use std::path::PathBuf;
 
 use anyhow::{Result, anyhow, bail};
 use clap::{Parser, ValueEnum};
@@ -44,6 +44,9 @@ fn main() -> Result<()> {
 
     if args.directions != 1 && args.directions != 4 {
         bail!("Directions must be 1 or 4");
+    }
+    if args.directions == 1 && args.offsets.is_some() {
+        eprintln!("'offsets' will be ignored when 'directions' is 1");
     }
     let image = open(args.path.as_path())
         .map_err(|e| anyhow!("Failed to open file={}: {e}", args.path.display()))?;
@@ -76,10 +79,7 @@ fn main() -> Result<()> {
             .file_stem()
             .ok_or_else(|| anyhow!("Given file doesn't have a filename"))?
             .to_string_lossy(),
-        ImageFormat::Png
-            .extensions_str()
-            .first()
-            .expect("No image extensions")
+        "png",
     ));
     flipped_image.save_with_format(&new_path, ImageFormat::Png)?;
     println!("Saved {}", new_path.display());
@@ -92,9 +92,9 @@ fn map_pixel(
     image: &DynamicImage,
     x: u32,
     y: u32,
-    offsets: &HashMap<Direction, (i64, i64)>,
+    offsets: &Offsets,
     no_source_behavior: NoSourcePixelBehavior,
-    mapper: impl Fn(i64, i64, i64, i64, &HashMap<Direction, (i64, i64)>) -> (i64, i64),
+    mapper: impl Fn(i64, i64, i64, i64, &Offsets) -> (i64, i64),
 ) -> Rgba<u8> {
     let dimensions = image.dimensions();
     let dim_x = i64::from(dimensions.0);
@@ -118,8 +118,8 @@ const fn map_coordinates_one_dir(width: i64, _h: i64, x: i64, y: i64, _: &Offset
     (width - x - 1, y)
 }
 
-/// Flips each individual sprite horizontally and swaps the positions of the east and west sprites.
-/// Additionally applies [offsets] as applicable.
+/// Flips each individual sprite horizontally as well as swaps the positions of the east and west
+/// sprites. Additionally applies [offsets] as applicable.
 fn map_coordinates_four_dir(
     width: i64,
     height: i64,
@@ -167,7 +167,7 @@ struct Args {
     #[arg(short, long)]
     offsets: Option<Vec<String>>,
     /// What to do when a pixel's mapped location is outside of the original sprite. This usually happens when an offset is given.
-    #[arg(short, long, value_enum)]
+    #[arg(short, long, value_enum, default_value_t = NoSourcePixelBehavior::Transparent)]
     no_source_pixel_behavior: NoSourcePixelBehavior,
     // TODO Output path
     // TODO Specify dimensions for non-square images

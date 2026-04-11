@@ -26,28 +26,26 @@ pub impl Args {
 }
 
 fn get_offsets(offsets: &[String]) -> anyhow::Result<Offsets> {
-    {
-        let directions_and_offsets: Vec<(Vec<Direction>, Offset)> = offsets
-            .iter()
-            .map(|s| {
-                let &[directions, offset] = &s.split('=').collect::<Vec<_>>()[..] else {
-                    bail!("Bad offset \"{s}\": expected two values separated by an equals sign")
-                };
+    let directions_and_offsets: Vec<(Vec<Direction>, Offset)> = offsets
+        .iter()
+        .map(|s| {
+            let &[directions, offset] = &s.split('=').collect::<Vec<_>>()[..] else {
+                bail!("Bad offset \"{s}\": expected two values separated by an equals sign")
+            };
 
-                let directions = directions_string_to_directions(directions)?;
-                let offset = offsets_string_to_offset(offset)?;
-                Ok((directions, offset))
-            })
-            .collect::<anyhow::Result<Vec<(Vec<_>, Offset)>>>()?;
-        Ok(directions_and_offsets
-            .into_iter()
-            .flat_map(|(directions, offset)| {
-                directions
-                    .into_iter()
-                    .map(move |direction| (direction, offset))
-            })
-            .collect())
-    }
+            let directions = directions_string_to_directions(directions)?;
+            let offset = offsets_string_to_offset(offset)?;
+            Ok((directions, offset))
+        })
+        .collect::<anyhow::Result<Vec<(Vec<_>, Offset)>>>()?;
+    Ok(directions_and_offsets
+        .into_iter()
+        .flat_map(|(directions, offset)| {
+            directions
+                .into_iter()
+                .map(move |direction| (direction, offset))
+        })
+        .collect())
 }
 
 /// Parses `"nw"` to `vec![North, West]`.
