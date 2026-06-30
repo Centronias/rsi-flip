@@ -1,18 +1,12 @@
 [package]
 name = "rsi-flip"
 description = "CLI tools for working with RSI spritesheets"
-version = "2.0.0"
+version = "2.0.1"
 authors = ["Charles Santos (\"Centronias\") <me@centronias.com>"]
 edition = "2024"
 repository = "https://github.com/Centronias/rsi-flip"
 license = "MIT"
 publish = false
-
-[package.metadata.wix]
-upgrade-guid = "8AA25E8B-6D8D-420D-986C-429A3E1107EE"
-path-guid = "C19340AE-7193-4083-8248-9089F98A1779"
-license = false
-eula = false
 
 [package.metadata.dist]
 dist = true
