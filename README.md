@@ -1,13 +1,25 @@
 # rsi-flip
+[![GitHub Release](https://img.shields.io/github/v/release/centronias/rsi-flip)](https://github.com/Centronias/rsi-flip/releases)
+[![Discord](https://img.shields.io/discord/310555209753690112?logo=discord&label=SS14%20Discord)
+](https://discord.com/channels/310555209753690112/@home)
+
+
 CLI tools for working with [RSI](https://docs.spacestation14.com/en/specifications/robust-station-image.html) sprite sheets.
 
 ## Installation
+
+### Installers (recommended)
+
+Download and run the installer for your platform from the [latest release](https://github.com/Centronias/rsi-flip/releases/latest).
+Installers are built using [cargo-dist](https://github.com/axodotdev/cargo-dist).
+
+### `cargo install`
 
 ```sh
 cargo install --git https://github.com/Centronias/rsi-flip
 ```
 
-Or build from source:
+### Build from source
 
 ```sh
 git clone https://github.com/Centronias/rsi-flip
