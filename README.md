@@ -1,26 +1,69 @@
-﻿# rsi-flip
-CLI tool for horizontally mirroring [RSI](https://docs.spacestation14.com/en/specifications/robust-station-image.html)s.
-Each direction is horizontally mirrored and the east and west directions swap locations.
+# rsi-flip
+CLI tools for working with [RSI](https://docs.spacestation14.com/en/specifications/robust-station-image.html) sprite sheets.
+
+## Installation
+
+```sh
+cargo install --git https://github.com/Centronias/rsi-flip
+```
+
+Or build from source:
+
+```sh
+git clone https://github.com/Centronias/rsi-flip
+cd rsi-flip
+cargo build --release
+```
+
+## Commands
+
+### `flip`
+
+Horizontally mirrors an RSI sprite sheet. In 4-direction mode (the default), each directional sprite is mirrored and the east and west sprites swap quadrant positions. In 1-direction mode the entire image is simply flipped horizontally.
 
 For example, this image
 
-![](demo.png)
+![](./demo/flip/input.png)
 
-would be flipped to become this image
+becomes this with 4 directions (the default):
 
-![](demo-flipped-4d.png).
+![](./demo/flip/output-4-dir.png)
 
-# Usage
-It's really dead simple at the moment. You just run `rsi-flip -p <path to rsi file>`, and it'll create a new file in the
-same directory with the `-flipped` suffix.
+or this with 1 direction:
 
-The tool assumes your image is square with even dimensions (because there're four quadrants). It should work with a wide
-variety of formats, but I haven't tested it on anything that wasn't just a standard 64x64 256 RGBA PNG.
+![](./demo/flip/output-1-dir.png)
 
-You can also specify that it should be flipped for only one direction, which only flips it horizontally across the
-entire image, like this:
+```sh
+rsi-flip flip -p sprite.png
+rsi-flip flip -p sprite.png -d 1
+rsi-flip flip -p sprite.png -o out.png --offsets n=0,2
+```
 
-![](demo-flipped-1d.png)
+Run `rsi-flip flip --help` for the full list of options.
 
-# Contact
+### `overlay`
+
+Alpha-composites a foreground PNG on top of a background PNG of the same dimensions, producing a single merged image.
+
+For example, using this image as the background
+
+![](./demo/overlay/background.png)
+
+and this image as the foreground
+
+![](./demo/overlay/foreground.png)
+
+produces this result:
+
+![](./demo/overlay/output.png)
+
+```sh
+rsi-flip overlay -b background.png -f foreground.png
+rsi-flip overlay -b background.png -f foreground.png -o out.png
+```
+
+Run `rsi-flip overlay --help` for the full list of options.
+
+## Contact
+
 I'll probably notice issues or whatever you create here, but feel free to beam me a message on Discord `@Centronias`.

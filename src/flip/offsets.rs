@@ -1,22 +1,24 @@
-﻿use std::collections::HashMap;
+use std::collections::HashMap;
 
 use anyhow::{anyhow, bail};
 
-use crate::{Args, Direction};
+use super::{Direction, FlipArgs};
 
+/// An `(x, y)` pixel offset to apply after the coordinate transform for a given direction.
 pub type Offset = (i64, i64);
+/// Per-direction offset table, keyed by [`Direction`].
 pub type Offsets = HashMap<Direction, Offset>;
 
 #[extend::ext]
 pub impl Offsets {
+    /// Returns the offset for `key`, or `(0, 0)` if no offset is configured for that direction.
     fn get_dir(&self, key: Direction) -> Offset {
         self.get(&key).copied().unwrap_or_default()
     }
 }
 
-#[extend::ext]
-pub impl Args {
-    fn get_offsets(&self) -> anyhow::Result<Offsets> {
+impl FlipArgs {
+    pub fn get_offsets(&self) -> anyhow::Result<Offsets> {
         let Some(offsets) = self.offsets.as_ref() else {
             return Ok(Offsets::default());
         };
@@ -25,6 +27,9 @@ pub impl Args {
     }
 }
 
+/// Parses a slice of `"<directions>=<x>,<y>"` strings into an [`Offsets`] map.
+/// A single string can specify multiple directions (e.g. `"nsew=0,1"`), which expands into
+/// one entry per direction.
 fn get_offsets(offsets: &[String]) -> anyhow::Result<Offsets> {
     let directions_and_offsets: Vec<(Vec<Direction>, Offset)> = offsets
         .iter()
@@ -48,14 +53,12 @@ fn get_offsets(offsets: &[String]) -> anyhow::Result<Offsets> {
         .collect())
 }
 
-/// Parses `"nw"` to `vec![North, West]`.
 fn directions_string_to_directions(s: &str) -> anyhow::Result<Vec<Direction>> {
     s.chars()
         .map(|d| Direction::try_from(d).map_err(|()| anyhow!("Invalid direction: {d}")))
         .collect::<anyhow::Result<Vec<_>, _>>()
 }
 
-/// Parses `"123,456"` to `(123, 456)`.
 fn offsets_string_to_offset(s: &str) -> anyhow::Result<Offset> {
     let &[x, y] = &s.split(',').collect::<Vec<_>>()[..] else {
         bail!("Bad offset \"{s}\": expected two numbers separated by a comma")
@@ -76,7 +79,7 @@ mod test {
     use rstest::rstest;
 
     use super::{directions_string_to_directions, get_offsets, offsets_string_to_offset};
-    use crate::Direction::{self, *};
+    use crate::flip::Direction::{self, *};
 
     #[rstest]
     #[case("n", vec![North])]
@@ -120,8 +123,6 @@ mod test {
     fn test_offsets_string_invalid(#[case] input: &str) {
         assert!(offsets_string_to_offset(input).is_err());
     }
-
-    // --- get_offsets ---
 
     #[test]
     fn test_get_offsets_single() {
