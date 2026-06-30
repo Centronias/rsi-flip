@@ -62,7 +62,7 @@
         Id='*'
         Name='rsi-flip'
         UpgradeCode='8AA25E8B-6D8D-420D-986C-429A3E1107EE'
-        Manufacturer='Centronias (Charles Santos)'
+        Manufacturer='Charles Santos (&quot;Centronias&quot;)'
         Language='1033'
         Codepage='1252'
         Version='$(var.Version)'>
@@ -70,7 +70,7 @@
         <Package Id='*'
             Keywords='Installer'
             Description='CLI tools for working with RSI spritesheets'
-            Manufacturer='Centronias (Charles Santos)'
+            Manufacturer='Charles Santos (&quot;Centronias&quot;)'
             InstallerVersion='450'
             Languages='1033'
             Compressed='yes'
